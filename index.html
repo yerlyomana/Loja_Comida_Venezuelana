@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja React</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <style>
+        * { padding: 0; margin: 0; }
+        
+        /* CABEÇALHO */
+        .cabecalho {
+            background-color: yellow;
+            text-align: center;
+            padding: 30px;
+        }
+        .titulo { color: cornsilk; font-family: monospace, Arial; }
+        
+        /* CONTEÚDO */
+        .conteudo {
+            min-height: 100vh;
+            padding: 20px 80px;
+            background-color: blue ;
+        }
+        .conteudo__cabecalho { color: darkorange; font: 800 20px Arial; margin-bottom: 10px;}
+        
+        /* PRODUTO */
+        .produto__container {
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            justify-content: space-between;
+            row-gap: 30px;
+            column-gap: 30px;
+            padding: 0 20px;
+        }
+        .produto {
+            background-color: #efefef;
+            width: 250px;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .produto__img { width: 190px; }
+        .produto__nome { font: 500 19px Arial }
+        .produto__preco { text-align: center; margin: 10px; font: 700 20px Arial; }
+        
+        /* RODAPÉ */
+        .rodape {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        var loja = {
+            nomeApp: "Comida Venezuelana",
+            autor: "Lojas das Y"
+        };
+        
+        class ProdutoFactory {
+            constructor(nome, preco, img) {
+                this.nome = nome;
+                this.preco = preco;
+                this.img = img;
+            }
+        }
+
+        var produto1 = new ProdutoFactory("Arepa de Carne Desmechada", 45, "img/carne desmechada.jpg");
+        var produto2 = new ProdutoFactory("Arepa de Abacate e Frango", 40, "img/aguacate y pollo.jpg");
+        var produto3 = new ProdutoFactory("Arepa de Feijão", 40, "img/domino.jpg");
+        var produto4 = new ProdutoFactory("Arepa de Presunto e Queijo", 25, "img/jamon y queso.jpg");
+        var produto5 = new ProdutoFactory("Arepa de Frango", 30, "img/pollo.jpg");
+        var produto6 = new ProdutoFactory("Arepa de Queijo ", 20, "img/queso.jpg");
+        var produto7 = new ProdutoFactory("Arepa de Rainha Pepiada", 45, "img/reina pepiada.jpg");
+        var produto8 = new ProdutoFactory("Arepa de Ovo Misturado", 35, "img/perico.jpg");
+
+        // retorna o cabeçalho
+        function Header(props) {
+            return (
+                <header className="cabecalho">
+                    <h1 className="titulo">{props.nomeApp}</h1>    
+                </header>
+            );
+        }
+
+        // retorna o elemento que representa o produto
+        function Produto(props) {
+            return (
+                <div className="produto">
+                    <img className="produto__img" src={props.produto.img} alt="produto"/>
+                    <p className="produto__nome">{props.produto.nome}</p>
+                    <p className="produto__preco">R$ {props.produto.preco}</p>    
+                </div>
+            );
+        }
+
+        // retorna a principal área de conteúdo
+        function Content(props) {
+            var produtos = [];
+            for (let x=0; x<props.produtos.length; x++) {
+                produtos.push(<Produto produto={props.produtos[x]} />);
+            }
+            return (
+                <main className="conteudo">
+                    <h2 className="conteudo__cabecalho">Arepas Venezuelanas</h2>
+                    <section className="produto__container">
+                        {produtos}
+                    </section>    
+                </main>
+            );
+        }
+
+        // retorna o rodapé
+        function Footer(props) {
+            return (
+                <footer className="rodape">
+                    <p>Desenvolvido por {props.autor}</p>    
+                </footer>
+            );
+        }
+
+        // componente principal
+        function App(props) {
+            return (
+                <div>
+                    <Header nomeApp={props.loja.nomeApp}/>
+                    <Content produtos={props.produtos}/>
+                    <Footer autor={props.loja.autor} />
+                </div>
+            );
+        }
+
+        const element = <App loja={loja} produtos={[produto1, produto2, produto3, produto4, produto5, produto6, produto7, produto8]}/>;
+        ReactDOM.render(element, document.getElementById("root"));
+    </script>
+</body>
+
+</html>
